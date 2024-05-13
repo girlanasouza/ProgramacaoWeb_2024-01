@@ -3,11 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tabela de Multiplicação</title>
 </head>
+<style>
+    table, th, td {
+    border:1px solid black;
+    }
+</style>
 <body>
+
     <script>
-        
+
+        const gerarTabela = () => {
+            var body = document.querySelector('body');
+            var table = document.createElement('table');
+            var header= document.createElement('tr');
+            table.appendChild(header);
+        }
+        gerarTabela();
     </script>
 </body>
 </html>
