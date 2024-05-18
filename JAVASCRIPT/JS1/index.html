@@ -5,44 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Instituto de Computação</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="script.js"></script>
   </head>
-  <body>
-    <script>
-      const gerarTabela = () => {
-        var body = document.querySelector("body");
-        var table = document.createElement("table");
-
-        var header = document.createElement("tr");
-        for (let i = 0; i <= 10; i++) {
-          var cell = document.createElement("th");
-          if (i === 0) {
-            cell.textContent = "X";
-          } else {
-            cell.textContent = i;
-          }
-          header.appendChild(cell);
-        }
-        table.appendChild(header);
-
-        // Corpo da tabela
-        for (let i = 1; i <= 10; i++) {
-          var row = document.createElement("tr");
-          for (let j = 0; j <= 10; j++) {
-            var cell = document.createElement("td");
-            if (j === 0) {
-              cell.textContent = i;
-            } else {
-              cell.textContent = i * j;
-            }
-            row.appendChild(cell);
-          }
-          table.appendChild(row);
-        }
-
-        body.appendChild(table);
-      };
-
-      gerarTabela();
-    </script>
-  </body>
+  <body></body>
 </html>
