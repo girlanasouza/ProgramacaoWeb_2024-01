@@ -1,0 +1,30 @@
+#board {
+  background-color: #ccc;
+  border: 2px solid black;
+}
+
+#board td {
+  width: 16px;
+  height: 16px;
+}
+
+#content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+p {
+  width: 40%;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 20px;
+}
+#mensagem {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#score {
+  display: flex;
+  justify-content: flex-start;
+}
