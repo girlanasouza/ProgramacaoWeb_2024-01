@@ -1,0 +1,58 @@
+{
+  "produtos": [
+    {
+      "id": "1",
+      "nome": "celular",
+      "preco": 100,
+      "estoque": 10
+    },
+    {
+      "id": "2",
+      "nome": "tablet",
+      "preco": 150,
+      "estoque": 12
+    },
+    {
+      "id": "2",
+      "nome": "monitor",
+      "preco": 200,
+      "estoque": 14
+    },
+    {
+      "id": "0c69",
+      "nome": "edge",
+      "preco": "1000",
+      "estoque": "12"
+    },
+    {
+      "id": "d9b7",
+      "nome": "edge",
+      "preco": "1000",
+      "estoque": "12"
+    },
+    {
+      "id": "5d97",
+      "nome": "edge",
+      "preco": "1000",
+      "estoque": "12"
+    },
+    {
+      "id": "8b4b",
+      "nome": "motorola edge 40",
+      "preco": "2000",
+      "estoque": "12"
+    },
+    {
+      "id": "8ee9",
+      "nome": "motorola edge 40",
+      "preco": "2000",
+      "estoque": "12"
+    },
+    {
+      "id": "0203",
+      "nome": "bicicleta caloi",
+      "preco": "800",
+      "estoque": "90"
+    }
+  ]
+}

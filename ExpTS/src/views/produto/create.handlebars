@@ -1,0 +1,42 @@
+<h4>Criação de Produtos</h4>
+
+<div class="container"> 
+    <div class="row"> 
+        <div class="col-6">
+            <form action="/produto/create" method="post">
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="nome" 
+                        name="nome" 
+                        placeholder="Celular BlaBla"
+                    >
+                </div>
+                <div class="mb-3">
+                    <label for="preco" class="form-label">Preço</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="preco" 
+                        name="preco" 
+                        placeholder="2990"
+                    >
+                </div>
+                <div class="mb-3">
+                    <label for="estoque" class="form-label">Estoque</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="estoque" 
+                        name="estoque" 
+                        placeholder="100"
+                    >
+                </div>
+
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+        </div>
+    </div>
+</div>
