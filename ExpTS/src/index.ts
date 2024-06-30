@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
+import router from "./router/router";
 
 dotenv.config();
 
@@ -27,9 +28,10 @@ app.use((req: Request, res: Response, next) => {
   next();
 });
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Hello world!");
-});
+// app.get("/", (req: Request, res: Response) => {
+//   res.send("Hello world!");
+// });
+app.use(router);
 
 app.listen(PORT, () => {
   console.log(`Express app iniciada na porta ${PORT}.`);
