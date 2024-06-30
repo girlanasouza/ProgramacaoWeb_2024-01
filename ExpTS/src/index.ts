@@ -1,47 +1,37 @@
-import express, { Request, Response } from "express";
-import fs from "fs";
-import path from "path";
-import dotenv from "dotenv";
-import router from "./router/router";
+import express from "express";
 import { engine } from "express-handlebars";
-
-dotenv.config();
+import router from "./router/router";
+import sass from "node-sass-middleware";
 
 const app = express();
 const PORT = process.env.PORT || 3333;
-const logFolder = process.env.LOG_FOLDER || "logs";
-const logFormat = process.env.LOG_FORMAT;
 require("dotenv").config();
 
 app.engine(
   "handlebars",
   engine({
+    layoutsDir: `${__dirname}/views/layouts`,
     helpers: require(`${__dirname}/views/helpers/helpers.ts`),
+    defaultLayout: "main",
   })
 );
 
 app.set("view engine", "handlebars");
 app.set("views", `${__dirname}/views`);
 
-app.use((req: Request, res: Response, next) => {
-  const now = new Date().toISOString();
-  const logFilePath = path.join(logFolder, "access.log");
+app.use(
+  sass({
+    src: `${__dirname}/../public/scss`,
+    dest: `${__dirname}/../public/css`,
+    outputStyle: "compressed",
+    prefix: "/css",
+  })
+);
 
-  let logMessage;
-
-  if (logFormat === "completo") {
-    logMessage = `${now} ${req.method} ${req.url} HTTP/${req.httpVersion} ${req.headers["user-agent"]}\n`;
-  } else {
-    logMessage = `${now} ${req.method} ${req.url}\n`;
-  }
-
-  fs.appendFileSync(logFilePath, logMessage, "utf8");
-
-  next();
-});
+app.use("/css", express.static(`${__dirname}/../public/css`));
 
 app.use(router);
 
 app.listen(PORT, () => {
-  console.log(`Express app iniciada na porta ${PORT}.`);
+  console.log(`Express app iniciada na porta ${PORT}`);
 });
