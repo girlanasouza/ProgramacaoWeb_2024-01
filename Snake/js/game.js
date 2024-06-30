@@ -1,38 +1,48 @@
 (function () {
-  let FPS = 10;
+  const INITIAL_FPS = 10;
   const SIZE = 40;
+  const SPEED_INCREMENT_INTERVAL = 60;
+  const SPEED_INCREMENT_FACTOR = 0.5;
+  let FPS = INITIAL_FPS;
+  let frameCount = 0;
   let score = 0;
   let interval;
-  let isPaused = false;
   let board;
   let snake;
   let food;
+  let isPaused = false;
+  let gameStarted = false;
+
   const scoreBoard = document.createElement("div");
   scoreBoard.setAttribute("id", "score");
   document.body.appendChild(scoreBoard);
 
   function init() {
-    if (board) {
-      board.element.remove();
+    if (gameStarted) {
+      if (board) {
+        board.element.remove();
+      }
+      score = 0;
+      updateScore();
+      document.getElementById("mensagem").innerText = "";
+
+      board = new Board(SIZE);
+      snake = new Snake([
+        [4, 4],
+        [4, 5],
+        [4, 6],
+      ]);
+      food = new Food();
+      food.generate();
+      FPS = INITIAL_FPS;
+      frameCount = 0;
+
+      updateScore();
+      clearInterval(interval);
+      interval = setInterval(run, 1000 / FPS);
     }
-    document.getElementById("score").innerText = "Score: " + score;
-    document.getElementById("mensagem").innerText = "";
-
-    board = new Board(SIZE);
-    snake = new Snake([
-      [4, 4],
-      [4, 5],
-      [4, 6],
-    ]);
-    food = new Food();
-    food.generate();
-    score = 0;
-
-    document.getElementById("score").innerText = "Score: " + score;
-    interval = setInterval(run, 1000 / FPS);
   }
 
-  let isInitializing = false;
   window.addEventListener("keydown", (e) => {
     switch (e.key) {
       case "ArrowUp":
@@ -51,10 +61,10 @@
         togglePause();
         break;
       case "S":
-        if (!interval && !isInitializing) {
-          isInitializing = true;
+      case "s":
+        if (!gameStarted) {
+          gameStarted = true;
           init();
-          isInitializing = false;
         }
         break;
       default:
@@ -71,6 +81,11 @@
       interval = null;
       isPaused = true;
     }
+  }
+
+  function updateScore() {
+    document.getElementById("score").innerText =
+      "Score: " + score.toString().padStart(5, "0");
   }
 
   class Board {
@@ -98,7 +113,7 @@
       this.body.forEach(
         (field) =>
           (document.querySelector(
-            `#board tr:nth-child(${field[0]}) td:nth-child(${field[1]})`
+            `#board tr:nth-child(${field[0] + 1}) td:nth-child(${field[1] + 1})`
           ).style.backgroundColor = this.color)
       );
     }
@@ -130,16 +145,18 @@
       this.body.push(newHead);
       if (newHead[0] === food.position[0] && newHead[1] === food.position[1]) {
         score += food.type === "red" ? 2 : 1;
-        document.getElementById("score").innerText = "Score: " + score;
+        updateScore();
         food.generate();
       } else {
         const oldTail = this.body.shift();
         document.querySelector(
-          `#board tr:nth-child(${oldTail[0]}) td:nth-child(${oldTail[1]})`
+          `#board tr:nth-child(${oldTail[0] + 1}) td:nth-child(${
+            oldTail[1] + 1
+          })`
         ).style.backgroundColor = board.color;
       }
       document.querySelector(
-        `#board tr:nth-child(${newHead[0]}) td:nth-child(${newHead[1]})`
+        `#board tr:nth-child(${newHead[0] + 1}) td:nth-child(${newHead[1] + 1})`
       ).style.backgroundColor = this.color;
     }
 
@@ -152,10 +169,10 @@
 
     isCollision(position) {
       if (
-        position[0] < 1 ||
-        position[0] > SIZE ||
-        position[1] < 1 ||
-        position[1] > SIZE
+        position[0] < 0 ||
+        position[0] >= SIZE ||
+        position[1] < 0 ||
+        position[1] >= SIZE
       ) {
         return true;
       }
@@ -179,12 +196,19 @@
     }
 
     generate() {
-      let x = Math.floor(Math.random() * SIZE) + 1;
-      let y = Math.floor(Math.random() * SIZE) + 1;
+      let x, y, isOnSnake;
+      do {
+        x = Math.floor(Math.random() * SIZE);
+        y = Math.floor(Math.random() * SIZE);
+        isOnSnake = snake.body.some(
+          (segment) => segment[0] === x && segment[1] === y
+        );
+      } while (isOnSnake);
+
       this.position = [x, y];
       this.type = Math.random() < 0.67 ? "black" : "red";
       document.querySelector(
-        `#board tr:nth-child(${x}) td:nth-child(${y})`
+        `#board tr:nth-child(${x + 1}) td:nth-child(${y + 1})`
       ).style.backgroundColor = this.color[this.type];
     }
   }
@@ -192,15 +216,23 @@
   function gameOver() {
     clearInterval(interval);
     interval = null;
-    alert("Game Over! Press 'S' to start a new game.");
+    gameStarted = false;
   }
 
   function run() {
-    snake.walk();
-    FPS += 1 / 60;
+    if (!isPaused) {
+      snake.walk();
+      frameCount++;
+      if (frameCount % SPEED_INCREMENT_INTERVAL === 0) {
+        FPS += SPEED_INCREMENT_FACTOR;
+        clearInterval(interval);
+        interval = setInterval(run, 1000 / FPS);
+      }
+    }
   }
 
   window.onload = function () {
-    init();
+    document.getElementById("mensagem").innerText =
+      "Pressione 'S' para iniciar o jogo.";
   };
 })();
