@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
-import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
+import dotenv from "dotenv";
 import router from "./router/router";
 import { engine } from "express-handlebars";
 
