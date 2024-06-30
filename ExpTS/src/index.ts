@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import fs from "fs";
 import path from "path";
 import router from "./router/router";
+import { engine } from "express-handlebars";
 
 dotenv.config();
 
@@ -10,6 +11,11 @@ const app = express();
 const PORT = process.env.PORT || 3333;
 const logFolder = process.env.LOG_FOLDER || "logs";
 const logFormat = process.env.LOG_FORMAT;
+require("dotenv").config();
+
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", `${__dirname}/views`);
 
 app.use((req: Request, res: Response, next) => {
   const now = new Date().toISOString();
@@ -28,9 +34,6 @@ app.use((req: Request, res: Response, next) => {
   next();
 });
 
-// app.get("/", (req: Request, res: Response) => {
-//   res.send("Hello world!");
-// });
 app.use(router);
 
 app.listen(PORT, () => {
